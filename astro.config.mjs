@@ -9,7 +9,7 @@ export default defineConfig({
   vite: {
     plugins: [],
     test: {
-      environment: "jsdom",
+      environment: "happy-dom",
     },
   },
   site: "http://localhost:4321",

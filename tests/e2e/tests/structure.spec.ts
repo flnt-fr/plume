@@ -1,12 +1,10 @@
-import { expect, test } from "@playwright/test";
+import { test } from "@playwright/test";
 import { PlumePage } from "@e2e/pages/PlumePage.ts";
 
 test.describe("Pages structure", () => {
   const pages = [
     { pageName: "Home", title: "Hello there", url: "/" },
     { pageName: "Blog", title: "Blog", url: "/blog" },
-    { pageName: "Projects", title: "Projects", url: "/projects" },
-    { pageName: "Talks", title: "Talks", url: "/talks" },
     { pageName: "About", title: "About", url: "/about" },
     { pageName: "Now", title: "Now", url: "/now" },
   ];
@@ -52,7 +50,7 @@ test.describe("Pages structure", () => {
         await plumePage.hasToggleThemeButton();
       });
 
-      test("has no referrer and external", async ({ page }) => {
+      test("has no referrer and external", async () => {
         await plumePage.allExternalLinksHaveNoReferrerAndExternal();
       });
     });

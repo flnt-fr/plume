@@ -7,12 +7,11 @@ import rehypeExternalLinks from "rehype-external-links";
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [],
     test: {
       environment: "happy-dom",
     },
   },
-  site: "http://localhost:4321",
+  site: process.env.SITE_URL || "http://localhost:4321",
   markdown: {
     rehypePlugins: [
       [

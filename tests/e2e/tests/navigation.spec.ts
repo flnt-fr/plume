@@ -12,8 +12,6 @@ test.describe("Navigation", () => {
   [
     { pageName: "Home", title: "Hello there", url: "/" },
     { pageName: "Blog", title: "Blog", url: "/blog" },
-    { pageName: "Projects", title: "Projects", url: "/projects" },
-    { pageName: "Talks", title: "Talks", url: "/talks" },
     { pageName: "About", title: "About", url: "/about" },
     { pageName: "Now", title: "Now", url: "/now" },
   ].forEach(({ pageName, title, url }) => {

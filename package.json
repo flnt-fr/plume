@@ -22,7 +22,7 @@
   "devDependencies": {
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.3",
-    "happy-dom": "^18.0.1",
+    "happy-dom": "^20.0.2",
     "playwright": "^1.52.0",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",

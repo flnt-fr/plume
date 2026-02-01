@@ -16,10 +16,10 @@ interface Props {
 
 const { title, description, type, image } = Astro.props;
 
-const footerContentAsEntry = await getEntry("components", "footer");
+const footerContentAsEntry = await getEntry("footer", "footer");
 if (!footerContentAsEntry) {
   throw new Error(
-    'Could not find "src/content/components/footer" page for "footer" component.',
+    'Could not find "src/content/components/footer.md" for footer component.',
   );
 }
 

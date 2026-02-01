@@ -98,4 +98,10 @@ export class PlumePage {
       await expect(link).toHaveAttribute("rel", "noreferrer external");
     }
   }
+
+  async hasAuthorInHeader() {
+    const header = this.page.getByRole("banner");
+    await expect(header).toBeVisible();
+    await expect(header).toContainText("Your Name Here");
+  }
 }

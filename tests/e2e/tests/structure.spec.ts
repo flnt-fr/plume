@@ -26,6 +26,10 @@ test.describe("Pages structure", () => {
         await plumePage.hasNavigation();
       });
 
+      test("has author in header", async () => {
+        await plumePage.hasAuthorInHeader();
+      });
+
       test("has h1", async () => {
         await plumePage.hasHeadingLevel1();
       });

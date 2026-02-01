@@ -2,6 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, test } from "vitest";
 // @ts-ignore
 import NavLink from "@/components/nav/NavLink.astro";
+// @ts-ignore
 import type { NavElement } from "@/components/nav/type/NavElement.ts";
 
 describe("NavLink", () => {

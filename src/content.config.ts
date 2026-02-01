@@ -4,13 +4,17 @@ import { glob } from "astro/loaders";
 
 export type CollectionName =
   | "pages"
-  | "blog"
-  | "projects"
-  | "talks"
-  | "thoughts";
+  | "blog";
 
-const components = defineCollection({
-  loader: glob({ pattern: "*.md", base: "./src/content/components/" }),
+const header = defineCollection({
+  loader: glob({ pattern: "header.md", base: "./src/content/components/" }),
+  schema: z.object({
+    author: z.string(),
+  }),
+});
+
+const footer = defineCollection({
+  loader: glob({ pattern: "footer.md", base: "./src/content/components/" }),
 });
 
 const pages = defineCollection({
@@ -44,44 +48,12 @@ const blog = defineCollection({
   }),
 });
 
-const projects = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
-  schema: z.object({
-    slug: z.string(),
-    title: z.string(),
-    description: z.string(),
-    order: z.number().default(Number.MAX_SAFE_INTEGER),
-    archived: z.boolean().default(false),
-  }),
-});
-
-const talks = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/talks" }),
-  schema: z.object({
-    slug: z.string(),
-    title: z.string(),
-    description: z.string(),
-    order: z.number().default(Number.MAX_SAFE_INTEGER),
-  }),
-});
-
-const thoughts = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/thoughts" }),
-  schema: z.object({
-    slug: z.string(),
-    title: z.string(),
-    created: z.date(),
-  }),
-});
-
 export const collections = {
   index,
-  components,
+  header,
+  footer,
   pages,
   blog,
-  projects,
-  talks,
-  thoughts,
 };
 
 export const isCollectionEmpty = async (

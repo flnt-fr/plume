@@ -14,19 +14,25 @@ All content on this page is written in French.
 
 ## 2. Content model
 
-The home page has no content collection. All content is static and defined directly in the page or in a dedicated configuration file `src/data/home.json`.
+The home page has no content collection. Content is split across two static source files.
 
-| Field         | Type     | Required | Description                               |
-|---------------|----------|----------|-------------------------------------------|
-| `name`        | `string` | yes      | Full name                                 |
-| `title`       | `string` | yes      | Professional title (e.g. `Développeur craft & IA`) |
-| `description` | `string` | yes      | Short pitch — a few sentences             |
-| `contact.email` | `string` | yes    | Contact email address                     |
-| `social.github` | `string` | yes    | GitHub profile URL                        |
-| `social.linkedin` | `string` | yes  | LinkedIn profile URL                      |
-| `social.bluesky` | `string` | yes   | Bluesky profile URL                       |
-| `social.mastodon` | `string` | yes  | Mastodon profile URL                      |
-| `social.rss`  | `string` | yes      | RSS feed URL — points to `/veille/rss.xml` |
+### `src/data/hero.md`
+
+Markdown file. The frontmatter holds identity fields; the body holds the description, authored as plain prose.
+
+| Field   | Type     | Required | Description                                        |
+|---------|----------|----------|----------------------------------------------------|
+| `name`  | `string` | yes      | Full name                                          |
+| `title` | `string` | yes      | Professional title (e.g. `Développeur craft & IA`) |
+| `email` | `string` | yes      | Contact email address                              |
+
+The Markdown body is required. It is the short pitch displayed in the hero — a few sentences. It is rendered as HTML via the Astro `Content` component passed as a slot to `Hero`.
+
+### `src/data/home.json`
+
+| Field    | Type                                | Required | Description                                                                                                                                                   |
+|----------|-------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `social` | `{ label: string; href: string }[]` | yes      | Ordered list of social and contact links. Order is significant. External links use absolute URLs (`https://…`); internal links use root-relative paths (`/…`). |
 
 ---
 
@@ -42,12 +48,14 @@ The page renders three sections in order:
 
 ## 4. Hero rendering
 
+The hero is rendered by the `Hero` component (`src/components/Hero.astro`). The page fetches `src/data/hero.md`, passes `name`, `title`, and `email` as typed props, and passes the rendered Markdown body as a slot.
+
 The hero renders:
 
-- **Name** — primary heading
-- **Title** — professional title, visually secondary to the name
-- **Description** — short pitch, a few sentences
-- **CTA** — a mailto link to `contact.email`, labelled `Me contacter`
+- **Name** — primary heading, from `hero.md` frontmatter
+- **Title** — professional title, visually secondary to the name, from `hero.md` frontmatter
+- **Description** — rendered from the `hero.md` body via the `Content` slot
+- **CTA** — a mailto link to `email`, labelled `Me contacter`
 
 No image, no background, no decorative elements.
 
@@ -57,15 +65,9 @@ No image, no background, no decorative elements.
 
 A flat list of icon-free links. Each link opens in a new tab with `rel="noopener noreferrer"`.
 
-Links rendered:
+Links rendered in the order defined in `social` from `home.json`. Each link uses its `label` as visible text. Whether a link opens in a new tab is derived from its `href`: absolute URLs (`https://…`) are external and open with `target="_blank" rel="noopener noreferrer"`; root-relative paths (`/…`) are internal and open in the same tab.
 
-- GitHub
-- LinkedIn
-- Bluesky
-- Mastodon
-- RSS — links to `/veille/rss.xml`
-
-Labels are the platform name. No icons unless they can be rendered in pure CSS or inline SVG without an icon library dependency.
+No icons unless they can be rendered in pure CSS or inline SVG without an icon library dependency.
 
 ---
 

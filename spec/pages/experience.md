@@ -42,19 +42,19 @@ Skills are stored in `src/data/skills.json` as an array of groups. Each group ha
 [
   {
     "category": "Langages",
-    "skills": ["TypeScript", "HTML", "CSS", ...]
+    "skills": ["TypeScript", "HTML", "CSS", "..."]
   },
   {
     "category": "Frameworks",
-    "skills": ["Astro", "...]
+    "skills": ["Astro", "..."]
   },
   {
     "category": "Technologies",
-    "skills": ["Docker", "n8n", ...]
+    "skills": ["Docker", "n8n", "..."]
   },
   {
     "category": "Méthodologies",
-    "skills": ["Clean Architecture", "TDD", ...]
+    "skills": ["Clean Architecture", "TDD", "..."]
   }
 ]
 ```
@@ -78,7 +78,7 @@ No tabs, no toggles, no JS. Both sections are always visible.
 
 Entries are sorted by `startDate` descending at build time in the page.
 
-Each entry renders:
+Each entry is rendered using the shared `Card` component (DaisyUI `card`, `card-bordered` variant, no shadow). The card contains:
 
 - **Role** — job title
 - **Company** — company or client name

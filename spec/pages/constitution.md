@@ -77,7 +77,21 @@ The site must be fully functional with JavaScript disabled. JS is permitted only
 
 Every dependency must be justified. Before adding a package, the question is: does the value outweigh the cost in maintenance, bundle size, and conceptual overhead? Prefer Astro built-ins and web platform APIs.
 
-Current allowed dependencies: Astro, Tailwind CSS, DaisyUI, Playwright (dev), @axe-core/playwright (dev).
+Current allowed dependencies:
+
+| Package | Type | Justification |
+|---|---|---|
+| `astro` | prod | framework |
+| `tailwindcss` + `@tailwindcss/vite` | prod | styling |
+| `daisyui` | prod | component layer on Tailwind |
+| `@tailwindcss/typography` | prod | `prose` class for Markdown page layouts |
+| `@astrojs/mdx` | prod | MDX support for content collections |
+| `@astrojs/sitemap` | prod | sitemap generation |
+| `@astrojs/rss` | prod | RSS feed for `/veille/rss.xml` |
+| `zod` | prod | schema validation for content collections |
+| `@biomejs/biome` | dev | linting and formatting |
+| `@astrojs/check` + `typescript` | dev | `astro check` type checking |
+| `playwright` + `@axe-core/playwright` | dev | end-to-end and accessibility tests |
 
 ---
 
@@ -94,9 +108,20 @@ src/
 ├── components/   # .astro templates only — typed props, no logic
 │   └── types/    # shared TypeScript types and interfaces
 ├── content/      # Astro content collections
+├── i18n/         # UI labels and static strings
+│   ├── index.ts  # re-exports the active language — the only file to change when switching language
+│   └── fr.ts     # French labels
 ├── layouts/
 ├── pages/        # data fetching and transformation live here
 └── styles/       # global resets and DaisyUI theme overrides only
+```
+
+All static UI labels (navigation, section titles, buttons, fallback text) are defined in `src/i18n/fr.ts` and imported everywhere via `src/i18n/index.ts`. No hardcoded strings in components or pages.
+
+Import convention throughout the project:
+
+```ts
+import { ui } from '@/i18n'
 ```
 
 ### Component rules
@@ -104,6 +129,7 @@ src/
 - No data fetching inside components
 - No conditional logic beyond simple prop-driven rendering
 - All props are explicitly typed via interfaces defined in `components/types/`
+- `Card` is the shared visual unit for all list-based content (experiences, projects, veille entries). It wraps the DaisyUI `card` component and is the only place where card styling is defined.
 
 ---
 

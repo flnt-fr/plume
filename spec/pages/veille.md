@@ -54,7 +54,7 @@ Tags are displayed on each entry. They are not interactive — no click, no filt
 
 ## 4. Entry rendering
 
-Each entry renders the following elements:
+Each entry is rendered using the shared `Card` component (DaisyUI `card`, `card-bordered` variant, no shadow). Given the potentially high number of entries per page, the card must remain visually light — no padding excess, no decorative elements. The card contains:
 
 - **Title** — links to the external `url`, opens in a new tab, `rel="noopener noreferrer"`
 - **Source** — displays `sourceName` as a link to `sourceUrl`, opens in a new tab, `rel="noopener noreferrer"`

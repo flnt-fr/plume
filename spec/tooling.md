@@ -79,12 +79,17 @@ Strict mode is enabled. No exceptions.
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
 ```
 
 `noUncheckedIndexedAccess` is added on top of Astro's strict preset — it forces explicit handling of potentially undefined array and object accesses, which is particularly relevant when consuming content collections.
+
+The `@/` alias maps to `src/` and is the canonical import path across the entire project. Example: `import { ui } from '@/i18n'`.
 
 ---
 

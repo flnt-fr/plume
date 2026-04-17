@@ -21,6 +21,18 @@ Every interactive element must be unambiguously identifiable as such. This means
 - Hover and focus states must be explicitly defined — not inherited or implicit
 - No interactive behaviour on elements that are not semantically interactive (`div`, `span` with click handlers are forbidden — use `<a>` or `<button>`)
 
+### Colour contrast and opacity
+
+On the Flexoki dark theme, `text-base-content` at reduced opacity is the standard way to express muted text. The minimum opacities that pass WCAG AA (4.5:1 for normal text) against the `base-100` background are:
+
+- `/65` — minimum for muted text (dates, secondary labels) — ~5.3:1
+- `/70` — recommended for interactive muted elements (links, footer, secondary CTAs) — ~5.9:1
+- `/60` — acceptable only for large text (≥ 24px regular or ≥ 18.67px bold) — ~4.6:1
+
+Never use `/50` or below for readable text. Disabled states (non-interactive) may use `/65` minimum.
+
+---
+
 ### External links
 
 Every external link must display an icon indicating it opens outside the site. The icon is rendered via CSS using the following SVG from **Remix Icon** (`ri-external-link-line`):

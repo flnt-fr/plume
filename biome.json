@@ -52,6 +52,16 @@
       }
     },
     {
+      "includes": ["tests/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["**/*.css"],
       "formatter": { "enabled": false },
       "linter": { "enabled": false }

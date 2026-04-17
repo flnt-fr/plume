@@ -18,7 +18,7 @@ const entriesWithContent = await Promise.all(
   sorted.slice(0, VEILLE_PAGE_SIZE).map(async (entry) => {
     const { Content } = await render(entry);
     return { entry, Content };
-  })
+  }),
 );
 ---
 

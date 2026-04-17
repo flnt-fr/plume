@@ -23,12 +23,14 @@ test('RSS feed is valid', async ({ request, baseURL }) => {
 
     const link = body.match(/<link>([^<]*)<\/link>/)?.[1]?.trim();
     expect(link, 'Item must have a link').toBeTruthy();
-    expect(() => new URL(link!), `Item link must be a valid URL: ${link}`).not.toThrow();
+    if (link) expect(() => new URL(link), `Item link must be a valid URL: ${link}`).not.toThrow();
 
     const pubDate = body.match(/<pubDate>([^<]*)<\/pubDate>/)?.[1]?.trim();
     expect(pubDate, 'Item must have a pubDate').toBeTruthy();
-    expect(isNaN(Date.parse(pubDate!)), `Item pubDate must be a valid date: ${pubDate}`).toBe(
-      false,
-    );
+    if (pubDate)
+      expect(
+        Number.isNaN(Date.parse(pubDate)),
+        `Item pubDate must be a valid date: ${pubDate}`,
+      ).toBe(false);
   }
 });

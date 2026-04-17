@@ -15,7 +15,15 @@ export default defineConfig({
     compress({
       Logger: 2,
       Action: {
-        Accomplished: async ({ Input, Before, After }: { Input: string; Before: number; After: number }) => {
+        Accomplished: async ({
+          Input,
+          Before,
+          After,
+        }: {
+          Input: string;
+          Before: number;
+          After: number;
+        }) => {
           const path = Input.split('/dist').pop() ?? Input;
           const saved = Before - After;
           const pct = Before > 0 ? Math.round((saved / Before) * 100) : 0;

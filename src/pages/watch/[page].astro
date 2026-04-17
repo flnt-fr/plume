@@ -34,7 +34,7 @@ const entriesWithContent = await Promise.all(
   entries.map(async (entry) => {
     const { Content } = await render(entry);
     return { entry, Content };
-  })
+  }),
 );
 ---
 

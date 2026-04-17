@@ -11,7 +11,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: `${siteName} — ${ui.rss.feedTitle}`,
     description: defaultDescription,
-    site: context.site!,
+    site: context.site ?? new URL(siteUrl),
     items: sorted.map((entry) => ({
       title: entry.data.title,
       link: entry.data.url,

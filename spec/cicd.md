@@ -7,9 +7,9 @@
 ## 1. Principles
 
 - Every pull request runs the full test suite before merge
-- Every commit on `main` — regardless of origin — runs the full test suite then deploys
-- No deployment proceeds if any test fails
+- Every commit on `main` — regardless of origin — runs the full test suite
 - Dependabot keeps dependencies up to date; its PRs are subject to the same pipeline as any other PR and auto-merge if tests pass
+- Artifacts are retained for **7 days** maximum — enough to investigate a failure, no long-term storage
 
 ---
 
@@ -21,39 +21,39 @@ All pull requests targeting `main` trigger the `ci` workflow. This applies to De
 
 ### Push to main
 
-Every push to `main` (including merges) triggers the `ci` workflow followed by the `deploy` workflow.
+Every push to `main` (including merges) triggers the `ci` workflow.
 
 ---
 
 ## 3. Workflows
 
-### `ci.yml` — build, preview, test
+### `ci.yml` — lint, build, test
 
 Runs on: `pull_request` targeting `main`, `push` to `main`.
 
 Steps in order:
 
-1. **Checkout** — `actions/checkout`
-2. **Setup Node.js** — version pinned in `.nvmrc` or `package.json#engines`
+1. **Checkout** — `actions/checkout@v4`
+2. **Setup Node.js** — `actions/setup-node@v4`, version `22`, with `npm` cache
 3. **Install dependencies** — `npm ci`
-4. **Build** — `npm run build` (`astro build`)
-5. **Start preview** — handled by Playwright `webServer` config, not a manual step
-6. **Test: internal links** — `npx playwright test tests/links.spec.ts`
-7. **Test: semantic structure** — `npx playwright test tests/structure.spec.ts`
-8. **Test: RSS feed** — `npx playwright test tests/rss.spec.ts`
-9. **Test: accessibility** — `npx playwright test tests/a11y.spec.ts`
+4. **Cache Playwright browsers** — `actions/cache@v4`, key on `package-lock.json` hash
+5. **Install Playwright browsers** — `chromium` only, skipped on cache hit (system deps still installed)
+6. **Lint and format** — `npm run check` (Biome — blocks on lint or format errors)
+7. **Build** — `npm run build` (includes `astro-compress` minification)
+8. **Test** — `npx playwright test --reporter=github,html` (all suites; `github` reporter annotates PRs inline)
+9. **Upload Playwright report** — `actions/upload-artifact@v4`, only on failure, `retention-days: 7`
 
-All test steps run sequentially. A failure at any step aborts the workflow.
+All steps run sequentially. A failure at any step aborts the workflow.
 
-### `deploy.yml` — deployment
+### `dependabot-automerge.yml` — auto-merge
 
-Runs on: `push` to `main`, after `ci` passes.
+Runs on: `pull_request` from `dependabot[bot]`.
 
 Steps:
 
-1. **Trigger Coolify webhook** — HTTP call to the Coolify deployment webhook URL, stored as a GitHub Actions secret (`COOLIFY_WEBHOOK_URL`)
+1. **Enable auto-merge** — `gh pr merge --auto --squash` via `GITHUB_TOKEN`
 
-> Deploy job details are deferred — this workflow is a placeholder pending Coolify configuration.
+Auto-merge activates once all required status checks (i.e. `ci`) pass. GitHub enforces this — the merge does not happen immediately on workflow trigger.
 
 ---
 
@@ -70,48 +70,27 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    assignees:
-      - "<github-username>"
     commit-message:
       prefix: "chore(deps)"
-```
-
-### Auto-merge
-
-Dependabot PRs auto-merge when the `ci` workflow passes. This is handled via a dedicated workflow:
-
-**File:** `.github/workflows/dependabot-automerge.yml`
-
-Runs on: `pull_request` from `dependabot[bot]`, after `ci` passes.
-
-```yaml
-- uses: actions/github-script@v7
-  with:
-    script: |
-      await github.rest.pulls.merge({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        pull_number: context.payload.pull_request.number,
-        merge_method: 'squash'
-      })
 ```
 
 Auto-merge applies to all Dependabot PRs — patch, minor, and major. If a major update breaks the build or tests, the pipeline blocks the merge naturally.
 
 ---
 
-## 5. Secrets
+## 5. Artifacts
 
-| Secret                 | Usage                          |
-|------------------------|--------------------------------|
-| `COOLIFY_WEBHOOK_URL`  | Coolify deployment trigger URL |
+| Artifact | Workflow | Condition | Retention |
+|---|---|---|---|
+| `playwright-report` | `ci` | on failure only | 7 days |
 
-No other secrets are required for a static site with no environment-specific configuration.
+No build artifacts (`dist/`) are stored — the site is deployed via Coolify webhook, not by pushing files.
 
 ---
 
 ## 6. Out of scope
 
+- Deployment — not configured yet
 - Staging environment or preview deployments per PR
 - Manual approval gates before deployment
 - Notifications (Slack, email) on failure

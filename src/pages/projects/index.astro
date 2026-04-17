@@ -1,0 +1,55 @@
+---
+import { getCollection, render } from 'astro:content';
+import Pagination from '@/components/Pagination.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { PROJECTS_PAGE_SIZE } from '@/config';
+import { ui } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const title = ui.projects.title;
+const description = 'Personal projects — software development, automation and AI tools.';
+
+const allEntries = await getCollection('projects');
+const sorted = allEntries.sort((a, b) => b.data.date.localeCompare(a.data.date));
+
+const totalPages = Math.ceil(sorted.length / PROJECTS_PAGE_SIZE);
+const entries = sorted.slice(0, PROJECTS_PAGE_SIZE);
+
+function formatMonth(dateStr: string): string {
+  const [year, month] = dateStr.split('-');
+  return new Date(parseInt(year ?? '2000', 10), parseInt(month ?? '1', 10) - 1).toLocaleDateString(
+    'en-US',
+    { month: 'short', year: 'numeric' },
+  );
+}
+---
+
+<BaseLayout {title} {description} canonicalPath="/projects">
+  <div class="max-w-2xl mx-auto px-6 py-16">
+    <h1 class="text-2xl font-semibold mb-8">{ui.projects.title}</h1>
+
+    <ol class="flex flex-col gap-4">
+      {
+        entries.map(async (entry) => {
+          const { Content } = await render(entry);
+          return (
+            <li>
+              <ProjectCard
+                id={entry.id}
+                title={entry.data.title}
+                date={formatMonth(entry.data.date)}
+                stack={entry.data.stack}
+                links={entry.data.links}
+                hasBody={!!entry.body?.trim()}
+              >
+                <Content />
+              </ProjectCard>
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    {totalPages > 1 && <Pagination currentPage={1} {totalPages} basePath="/projects" />}
+  </div>
+</BaseLayout>

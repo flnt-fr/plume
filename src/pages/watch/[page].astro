@@ -1,0 +1,75 @@
+---
+import { getCollection, render } from 'astro:content';
+import Pagination from '@/components/Pagination.astro';
+import WatchCard from '@/components/WatchCard.astro';
+import { VEILLE_PAGE_SIZE } from '@/config';
+import { ui } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const allEntries = await getCollection('watch');
+  const sorted = allEntries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  const totalPages = Math.ceil(sorted.length / VEILLE_PAGE_SIZE);
+
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const page = i + 2;
+    const start = (page - 1) * VEILLE_PAGE_SIZE;
+    return {
+      params: { page: String(page) },
+      props: {
+        entries: sorted.slice(start, start + VEILLE_PAGE_SIZE),
+        currentPage: page,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { entries, currentPage, totalPages } = Astro.props;
+
+const title = `${ui.watch.title} — Page ${currentPage}`;
+const description = 'Commented links on software development and artificial intelligence.';
+
+const entriesWithContent = await Promise.all(
+  entries.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { entry, Content };
+  })
+);
+---
+
+<BaseLayout {title} {description} canonicalPath={`/watch/${currentPage}`}>
+  <div class="max-w-2xl mx-auto px-6 py-16">
+    <div class="flex items-baseline justify-between mb-8">
+      <h1 class="text-2xl font-semibold">{ui.watch.title}</h1>
+      <a
+        href="/watch/rss.xml"
+        class="text-sm text-base-content/70 hover:text-base-content transition-colors"
+      >
+        {ui.watch.rssLink}
+      </a>
+    </div>
+
+    <ol class="flex flex-col gap-4">
+      {
+        entriesWithContent.map(({ entry, Content }) => (
+          <li>
+            <WatchCard
+              title={entry.data.title}
+              url={entry.data.url}
+              date={entry.data.date}
+              sourceName={entry.data.source.name}
+              sourceUrl={entry.data.source.url}
+              tags={entry.data.tags}
+              hasComment={!!entry.body?.trim()}
+            >
+              <Content />
+            </WatchCard>
+          </li>
+        ))
+      }
+    </ol>
+
+    <Pagination {currentPage} {totalPages} basePath="/watch" />
+  </div>
+</BaseLayout>

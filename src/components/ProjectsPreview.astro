@@ -1,0 +1,31 @@
+---
+import { ui } from '@/i18n';
+import ProjectPreviewCard from './ProjectPreviewCard.astro';
+import type { ProjectsPreviewProps } from './types/ProjectsPreview';
+
+type Props = ProjectsPreviewProps;
+const { entries } = Astro.props;
+
+function formatMonth(date: Date): string {
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+---
+
+<section aria-labelledby="projects-preview-heading">
+  <h2 id="projects-preview-heading" class="text-xl font-semibold mb-1">{ui.projects.title}</h2>
+  <ol>
+    {
+      entries.map(({ title, date, stack, links, body }) => (
+        <li>
+          <ProjectPreviewCard {title} date={formatMonth(date)} {stack} {links} {body} />
+        </li>
+      ))
+    }
+  </ol>
+  <a
+    href="/projects"
+    class="inline-block mt-4 text-sm text-base-content/70 hover:text-base-content transition-colors"
+  >
+    {ui.projects.allProjectsLink}
+  </a>
+</section>

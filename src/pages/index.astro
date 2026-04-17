@@ -1,17 +1,71 @@
 ---
+import { getCollection } from 'astro:content';
+import type { MarkdownInstance } from 'astro';
+import Hero from '@/components/Hero.astro';
+import ProjectsPreview from '@/components/ProjectsPreview.astro';
+import SocialLinks from '@/components/SocialLinks.astro';
+import WatchPreview from '@/components/WatchPreview.astro';
+import { PROJECTS_PREVIEW_COUNT, VEILLE_PREVIEW_COUNT } from '@/config';
+import homeData from '@/data/home.json';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 
+interface HeroFrontmatter {
+  name: string;
+  title: string;
+  email: string;
+}
+
+const heroMd = (await import('@/data/hero.md')) as unknown as MarkdownInstance<HeroFrontmatter>;
+const { frontmatter, Content } = heroMd;
+
+const title = `${frontmatter.name} — ${frontmatter.title}`;
+const description = await heroMd.compiledContent();
+
+const allWatch = await getCollection('watch');
+const previewWatch = allWatch
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, VEILLE_PREVIEW_COUNT);
+
+const allProjects = await getCollection('projects');
+const previewProjects = allProjects
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .slice(0, PROJECTS_PREVIEW_COUNT)
+  .map((e) => {
+    const [year, month] = e.data.date.split('-');
+    return {
+      title: e.data.title,
+      date: new Date(parseInt(year ?? '2000', 10), parseInt(month ?? '1', 10) - 1),
+      stack: e.data.stack,
+      links: e.data.links,
+      body: e.body ?? undefined,
+    };
+  });
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout {title} description={description.replace(/<[^>]+>/g, '')} canonicalPath="/" appendSiteName={false}>
+  <div class="max-w-2xl mx-auto px-6 py-16">
+    <Hero name={frontmatter.name} title={frontmatter.title} email={frontmatter.email}>
+      <Content />
+    </Hero>
+
+    <div class="mt-12">
+      <SocialLinks links={homeData.social} />
+    </div>
+
+    <div class="mt-16">
+      <ProjectsPreview entries={previewProjects} />
+    </div>
+
+    <div class="mt-16">
+      <WatchPreview
+        entries={previewWatch.map((e) => ({
+          title: e.data.title,
+          url: e.data.url,
+          date: e.data.date,
+          sourceName: e.data.source.name,
+          sourceUrl: e.data.source.url,
+        }))}
+      />
+    </div>
+  </div>
+</BaseLayout>

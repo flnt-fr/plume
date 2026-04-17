@@ -1,0 +1,32 @@
+---
+import { ui } from '@/i18n';
+import type { PaginationProps } from './types/Pagination';
+
+type Props = PaginationProps;
+const { currentPage, totalPages, basePath } = Astro.props;
+
+const prevHref = currentPage === 2 ? basePath : `${basePath}/${currentPage - 1}`;
+const nextHref = `${basePath}/${currentPage + 1}`;
+---
+
+<nav aria-label="Pagination" class="flex items-center justify-between text-sm mt-12">
+  {currentPage > 1 ? (
+    <a href={prevHref} class="hover:text-base-content/70 transition-colors">
+      {ui.watch.prevPage}
+    </a>
+  ) : (
+    <span class="text-base-content/65">{ui.watch.prevPage}</span>
+  )}
+
+  <span class="text-base-content/70">
+    Page {currentPage} of {totalPages}
+  </span>
+
+  {currentPage < totalPages ? (
+    <a href={nextHref} class="hover:text-base-content/70 transition-colors">
+      {ui.watch.nextPage}
+    </a>
+  ) : (
+    <span class="text-base-content/65">{ui.watch.nextPage}</span>
+  )}
+</nav>

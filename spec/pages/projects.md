@@ -1,4 +1,4 @@
-# spec: /projets
+# spec: /projects
 
 > Scope: content model, page structure, and rendering rules for the projects page.
 
@@ -6,9 +6,7 @@
 
 ## 1. Purpose
 
-`/projets` lists personal projects. It serves as a demonstration of technical work and approach. A preview of the most recent projects is also surfaced on the home page.
-
-All content on this page is written in French.
+`/projects` lists personal projects. It serves as a demonstration of technical work and approach. A preview of the most recent projects is also surfaced on the home page.
 
 ---
 
@@ -44,14 +42,14 @@ The MDX body is required — it is the project description. No length constraint
 
 ## 3. Page structure
 
-`/projets` renders a paginated list of all projects, sorted by `date` descending.
+`/projects` renders a paginated list of all projects, sorted by `date` descending.
 
 ### Pagination
 
 Entries are paginated statically. Each page displays **`PROJECTS_PAGE_SIZE`** entries (defined in `src/config.ts`).
 
-- Page 1: `/projets`
-- Page N: `/projets/${n}` (N ≥ 2)
+- Page 1: `/projects`
+- Page N: `/projects/${n}` (N ≥ 2)
 
 If the total number of projects is ≤ `PROJECTS_PAGE_SIZE`, no pagination UI is rendered.
 
@@ -81,7 +79,7 @@ The preview renders for each project:
 - **Description** — body rendered as plain text (no MDX processing)
 - **Links** — same as the full card: flat list of external links with `rel="noopener noreferrer"`
 
-The section includes a link to `/projets` to access the full list.
+The section includes a link to `/projects` to access the full list.
 
 ---
 

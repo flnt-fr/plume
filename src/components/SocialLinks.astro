@@ -1,0 +1,33 @@
+---
+import { ui } from '@/i18n';
+import type { SocialLinksProps } from './types/SocialLinks';
+
+type Props = SocialLinksProps;
+const { links } = Astro.props;
+---
+
+<section aria-labelledby="liens-heading">
+  <h2 id="liens-heading" class="sr-only">{ui.social.sectionLabel}</h2>
+  <ul class="flex flex-wrap gap-4">
+    {
+      links.map(({ href, label }) => (
+        <li>
+          {href.startsWith('http') ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-base-content/70 hover:text-base-content transition-colors"
+            >
+              {label}
+            </a>
+          ) : (
+            <a href={href} class="text-sm text-base-content/70 hover:text-base-content transition-colors">
+              {label}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>

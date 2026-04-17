@@ -1,0 +1,38 @@
+---
+import { ui } from '@/i18n';
+import type { ProjectPreviewCardProps } from './types/ProjectPreviewCard';
+
+type Props = ProjectPreviewCardProps;
+const { title, date, stack, links, body } = Astro.props;
+---
+
+<div class="flex flex-col gap-1 py-3 border-t border-base-300">
+  <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+    <span class="text-sm font-medium">{title}</span>
+    <time class="text-xs text-base-content/65 shrink-0">{date}</time>
+  </div>
+  {stack.length > 0 && (
+    <ul class="flex flex-wrap gap-2 mt-1" aria-label={ui.projects.stackAriaLabel}>
+      {stack.map((tech) => (
+        <li class="badge badge-ghost badge-sm">{tech}</li>
+      ))}
+    </ul>
+  )}
+  {body && <p class="text-sm text-base-content/70 mt-1">{body.trim()}</p>}
+  {links && links.length > 0 && (
+    <ul class="flex flex-wrap gap-4 mt-1">
+      {links.map(({ label, url }) => (
+        <li>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs text-base-content/70 hover:text-base-content transition-colors"
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</div>

@@ -1,0 +1,48 @@
+---
+import Card from './Card.astro';
+import type { WatchCardProps } from './types/WatchCard';
+
+type Props = WatchCardProps;
+const { title, url, date, sourceName, sourceUrl, tags, hasComment } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+});
+---
+
+<Card>
+  <div class="flex flex-col gap-2">
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-medium hover:text-base-content/70 transition-colors"
+      >
+        {title}
+      </a>
+      <time datetime={date.toISOString()} class="text-xs text-base-content/65 shrink-0">
+        {formattedDate}
+      </time>
+    </div>
+    <p class="text-sm text-base-content/70">
+      <a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="hover:text-base-content/70 transition-colors">
+        {sourceName}
+      </a>
+    </p>
+    {hasComment && (
+      <div class="mt-1 text-sm text-base-content/70 border-l-2 border-base-300 pl-3">
+        <slot />
+      </div>
+    )}
+    {tags.length > 0 && (
+      <ul class="flex flex-wrap gap-2 mt-1">
+        {tags.map((tag) => (
+          <li class="badge badge-ghost badge-sm">{tag}</li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Card>

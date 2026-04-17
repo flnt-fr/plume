@@ -1,0 +1,38 @@
+---
+import type { WatchPreviewCardProps } from './types/WatchPreviewCard';
+
+type Props = WatchPreviewCardProps;
+const { title, url, date, sourceName, sourceUrl } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+});
+---
+
+<div class="flex flex-col gap-1 py-3 border-t border-base-300">
+  <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-sm font-medium hover:text-base-content/70 transition-colors"
+    >
+      {title}
+    </a>
+    <time datetime={date.toISOString()} class="text-xs text-base-content/65 shrink-0">
+      {formattedDate}
+    </time>
+  </div>
+  <p class="text-xs text-base-content/70">
+    <a
+      href={sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hover:text-base-content/70 transition-colors"
+    >
+      {sourceName}
+    </a>
+  </p>
+</div>

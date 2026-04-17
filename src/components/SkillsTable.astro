@@ -1,0 +1,26 @@
+---
+import { ui } from '@/i18n';
+import type { SkillsTableProps } from './types/SkillsTable';
+
+type Props = SkillsTableProps;
+const { groups } = Astro.props;
+---
+
+<table class="w-full text-sm">
+  <caption class="sr-only">{ui.experiences.skillsCaption}</caption>
+  <tbody>
+    {
+      groups.map(({ category, skills }) => (
+        <tr class="border-t border-base-300 align-top">
+          <th
+            scope="row"
+            class="py-3 pr-6 text-left font-medium text-base-content/60 whitespace-nowrap w-36"
+          >
+            {category}
+          </th>
+          <td class="py-3 text-base-content/90">{skills.join(', ')}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

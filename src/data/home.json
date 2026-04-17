@@ -1,0 +1,9 @@
+{
+  "social": [
+    { "label": "GitHub", "href": "https://github.com/username" },
+    { "label": "LinkedIn", "href": "https://linkedin.com/in/username" },
+    { "label": "Bluesky", "href": "https://bsky.app/profile/username.bsky.social" },
+    { "label": "Mastodon", "href": "https://mastodon.social/@username" },
+    { "label": "RSS", "href": "/watch/rss.xml" }
+  ]
+}

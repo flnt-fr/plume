@@ -1,0 +1,62 @@
+---
+import { getCollection, render } from 'astro:content';
+import ExperienceCard from '@/components/ExperienceCard.astro';
+import SkillsTable from '@/components/SkillsTable.astro';
+import skillsData from '@/data/skills.json';
+import { ui } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const title = ui.experiences.title;
+const description =
+  'Professional background and technical skills — software craft, architecture and applied AI.';
+
+const entries = await getCollection('experiences');
+const sorted = entries.sort((a, b) => b.data.startDate.localeCompare(a.data.startDate));
+
+function formatDate(yyyyMm: string): string {
+  const [year, month] = yyyyMm.split('-');
+  return new Date(Number(year), Number(month) - 1).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+function formatPeriod(startDate: string, endDate?: string): string {
+  return `${formatDate(startDate)} – ${endDate ? formatDate(endDate) : ui.experiences.today}`;
+}
+---
+
+<BaseLayout {title} {description} canonicalPath="/experiences">
+  <div class="max-w-2xl mx-auto px-6 py-16">
+
+    <section aria-labelledby="experiences-heading">
+      <h1 id="experiences-heading" class="text-2xl font-semibold mb-8">{ui.experiences.title}</h1>
+      <ol class="flex flex-col gap-4" reversed>
+        {
+          sorted.map(async (entry) => {
+            const { Content } = await render(entry);
+            return (
+              <li>
+                <ExperienceCard
+                  role={entry.data.role}
+                  company={entry.data.company}
+                  period={formatPeriod(entry.data.startDate, entry.data.endDate)}
+                  tags={entry.data.tags}
+                  hasBody={!!entry.body}
+                >
+                  <Content />
+                </ExperienceCard>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+
+    <section aria-labelledby="skills-heading" class="mt-16">
+      <h2 id="skills-heading" class="text-2xl font-semibold mb-6">{ui.experiences.skillsTitle}</h2>
+      <SkillsTable groups={skillsData} />
+    </section>
+
+  </div>
+</BaseLayout>

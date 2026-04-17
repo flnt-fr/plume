@@ -1,0 +1,16 @@
+---
+import { ui } from '@/i18n';
+import type { HeroProps } from './types/Hero';
+
+type Props = HeroProps;
+const { name, title, email } = Astro.props;
+---
+
+<section aria-labelledby="hero-name">
+  <h1 id="hero-name" class="text-3xl font-semibold mb-1">{name}</h1>
+  <p class="text-base-content/60 mb-6">{title}</p>
+  <div class="leading-relaxed mb-8">
+    <slot />
+  </div>
+  <a href={`mailto:${email}`} class="btn btn-sm btn-neutral">{ui.hero.cta}</a>
+</section>

@@ -1,0 +1,27 @@
+---
+import { ui } from '@/i18n';
+import type { WatchPreviewProps } from './types/WatchPreview';
+import WatchPreviewCard from './WatchPreviewCard.astro';
+
+type Props = WatchPreviewProps;
+const { entries } = Astro.props;
+---
+
+<section aria-labelledby="watch-preview-heading">
+  <h2 id="watch-preview-heading" class="text-xl font-semibold mb-1">{ui.watch.title}</h2>
+  <ol>
+    {
+      entries.map(({ title, url, date, sourceName, sourceUrl }) => (
+        <li>
+          <WatchPreviewCard {title} {url} {date} {sourceName} {sourceUrl} />
+        </li>
+      ))
+    }
+  </ol>
+  <a
+    href="/watch"
+    class="inline-block mt-4 text-sm text-base-content/70 hover:text-base-content transition-colors"
+  >
+    {ui.watch.allEntriesLink}
+  </a>
+</section>

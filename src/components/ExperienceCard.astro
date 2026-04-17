@@ -1,0 +1,28 @@
+---
+import { ui } from '@/i18n';
+import Card from './Card.astro';
+import type { ExperienceCardProps } from './types/ExperienceCard';
+
+type Props = ExperienceCardProps;
+const { role, company, period, tags, hasBody } = Astro.props;
+---
+
+<Card>
+  <div class="flex flex-col gap-1 mb-3">
+    <h2 class="font-semibold">{role}</h2>
+    <p class="text-base-content/70 text-sm">{company}</p>
+    <p class="text-base-content/70 text-sm">{period}</p>
+  </div>
+  {hasBody && (
+    <div class="prose prose-sm max-w-none mb-3">
+      <slot />
+    </div>
+  )}
+  {tags && tags.length > 0 && (
+    <ul class="flex flex-wrap gap-2" aria-label={ui.experiences.tagsAriaLabel}>
+      {tags.map((tag) => (
+        <li class="badge badge-ghost badge-sm">{tag}</li>
+      ))}
+    </ul>
+  )}
+</Card>

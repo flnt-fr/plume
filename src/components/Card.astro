@@ -1,0 +1,12 @@
+---
+interface Props {
+  id?: string;
+}
+const { id } = Astro.props;
+---
+
+<div class="card card-border bg-base-100 shadow-none" id={id}>
+  <div class="card-body p-6">
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "./footer.css";
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+
+:root {
+  font-size: 18px;
+}
+
+@plugin "daisyui/theme" {
+  name: "flexoki-light";
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: oklch(99% 0.009 96);
+  --color-base-200: oklch(95% 0.009 82);
+  --color-base-300: oklch(91% 0.008 78);
+  --color-base-content: oklch(18% 0.005 52);
+
+  --color-primary: oklch(27% 0.006 53);
+  --color-primary-content: oklch(99% 0.009 96);
+
+  --color-secondary: oklch(83% 0.007 63);
+  --color-secondary-content: oklch(18% 0.005 52);
+
+  --color-accent: oklch(49% 0.16 22);
+  --color-accent-content: oklch(97% 0.008 64);
+
+  --color-neutral: oklch(91% 0.008 78);
+  --color-neutral-content: oklch(18% 0.005 52);
+
+  --color-info: oklch(50% 0.12 240);
+  --color-info-content: oklch(97% 0.008 64);
+
+  --color-success: oklch(57% 0.12 127);
+  --color-success-content: oklch(97% 0.008 64);
+
+  --color-warning: oklch(66% 0.14 75);
+  --color-warning-content: oklch(13.35% 0.004 50);
+
+  --color-error: oklch(49% 0.16 22);
+  --color-error-content: oklch(97% 0.008 64);
+}
+
+@plugin "daisyui/theme" {
+  name: "flexoki-dark";
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: oklch(13.35% 0.004 50);
+  --color-base-200: oklch(17.8% 0.005 52);
+  --color-base-300: oklch(22.5% 0.005 52);
+  --color-base-content: oklch(82.5% 0.007 63);
+
+  --color-primary: oklch(54% 0.006 56);
+  --color-primary-content: oklch(13.35% 0.004 50);
+
+  --color-secondary: oklch(36% 0.006 54);
+  --color-secondary-content: oklch(82.5% 0.007 63);
+
+  --color-accent: oklch(49% 0.16 22);
+  --color-accent-content: oklch(97% 0.008 64);
+
+  --color-neutral: oklch(17.8% 0.005 52);
+  --color-neutral-content: oklch(82.5% 0.007 63);
+
+  --color-info: oklch(50% 0.12 240);
+  --color-info-content: oklch(97% 0.008 64);
+
+  --color-success: oklch(57% 0.12 127);
+  --color-success-content: oklch(97% 0.008 64);
+
+  --color-warning: oklch(66% 0.14 75);
+  --color-warning-content: oklch(13.35% 0.004 50);
+
+  --color-error: oklch(49% 0.16 22);
+  --color-error-content: oklch(97% 0.008 64);
+}
+
+/* External link icon — Remix Icon ri-external-link-line */
+a[target="_blank"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-left: 0.25em;
+  vertical-align: middle;
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}

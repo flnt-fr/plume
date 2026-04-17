@@ -1,0 +1,18 @@
+[
+  {
+    "category": "Languages",
+    "skills": ["TypeScript", "Python", "HTML", "CSS", "SQL"]
+  },
+  {
+    "category": "Frameworks",
+    "skills": ["Astro", "Node.js", "FastAPI", "React"]
+  },
+  {
+    "category": "Technologies",
+    "skills": ["Docker", "PostgreSQL", "n8n", "Git", "GitHub Actions", "Redis"]
+  },
+  {
+    "category": "Methodologies",
+    "skills": ["Clean Architecture", "TDD", "DDD", "CI/CD", "Code review"]
+  }
+]

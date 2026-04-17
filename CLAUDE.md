@@ -13,6 +13,7 @@ npm run astro ... # Run Astro CLI commands (e.g. astro add, astro check)
 npm run lint      # Biome lint
 npm run format    # Biome format
 npm run check     # Biome lint + format (canonical — used in CI)
+npm run lighthouse # Build + preview + unlighthouse UI
 ```
 
 ## Architecture
@@ -22,11 +23,11 @@ This is an [Astro](https://astro.build) site (v6) — static generation only, no
 - `src/pages/` — file-based routing; `.astro` and `.md` files become pages
 - `src/components/` — purely presentational `.astro` components, typed props, no data fetching
 - `src/components/types/` — shared TypeScript interfaces for component props
-- `src/content/` — Astro content collections (veille entries, experience entries)
+- `src/content/` — Astro content collections (watch entries, experience entries, project entries)
 - `src/layouts/` — base layout with SEO meta tags
-- `src/data/` — static JSON data (`home.json`, `skills.json`)
+- `src/data/` — static data files (`home.json`, `skills.json`, `hero.md`, `footer.mdx`)
 - `src/config.ts` — global constants (`siteUrl`, `siteName`, SEO defaults, `VEILLE_PREVIEW_COUNT`)
-- `src/styles/` — global resets and DaisyUI theme overrides only
+- `src/styles/` — global CSS: theme tokens, base font size, and component-specific files scoped by class name
 - `public/` — static assets served at the root
 - `tests/` — Playwright tests (run against production build, never dev server)
 - `spec/` — project specifications (source of truth for all design and technical decisions)
@@ -39,9 +40,9 @@ All specifications live in `spec/`. Read the relevant spec before implementing a
 
 - `spec/pages/constitution.md` — **non-negotiable principles**, supersedes everything
 - `spec/pages/home.md` — home page (`/`)
-- `spec/pages/veille.md` — watch feed (`/veille`)
+- `spec/pages/watch.md` — watch feed (`/watch`)
 - `spec/pages/experience.md` — experience and skills (`/experiences`)
-- `spec/pages/projets.md` — projects (`/projets`) — deferred, route must not exist yet
+- `spec/pages/projects.md` — projects (`/projects`)
 - `spec/tooling.md` — Biome, TypeScript, EditorConfig
 - `spec/seo.md` — meta tags, Open Graph, sitemap, robots
 - `spec/accessibility.md` — WCAG 2.1 AA, external link icon, axe-core tests
@@ -50,9 +51,9 @@ All specifications live in `spec/`. Read the relevant spec before implementing a
 
 ## Key design rules (from constitution.md)
 
-- Styling: **DaisyUI + Tailwind CSS**, theme **Flexoki** in monochromatic mode. Use DaisyUI semantic tokens, not raw Tailwind color utilities.
+- Styling: **DaisyUI + Tailwind CSS**, theme **Flexoki** in monochromatic mode — two variants (`flexoki-light` default, `flexoki-dark` via `prefers-color-scheme`). Use DaisyUI semantic tokens, not raw Tailwind color utilities.
 - No decorative complexity: no gradients, no animations unless meaningful, no shadows unless encoding depth.
-- Custom CSS: plain CSS, component-scoped `<style>` blocks only — no global files, no SCSS.
+- Custom CSS: plain CSS, no SCSS. Prefer component-scoped `<style>` blocks. When styling MDX-rendered content (outside Astro's scoping reach), use a dedicated file in `src/styles/` with all selectors prefixed by a wrapper class.
 - JavaScript: only when the feature is invisible without JS, not broken. No runtime framework. TypeScript only (no `.js` files).
 - Components: no data fetching, no business logic — props in, markup out.
 - Pages own all data fetching and transformation logic.
@@ -61,13 +62,13 @@ All specifications live in `spec/`. Read the relevant spec before implementing a
 
 | Route | Type | Notes |
 |---|---|---|
-| `/` | static | hero, social links, projets preview, veille preview |
-| `/a-propos` | Markdown | plain page, no collection |
+| `/` | static | hero, social links, projects preview, watch preview |
+| `/about` | Markdown | plain page, no collection |
 | `/experiences` | collection | MDX entries + `skills.json` |
-| `/projets` | collection | MDX entries, preview on home |
-| `/veille` | collection | paginated feed, RSS at `/veille/rss.xml` |
+| `/projects` | collection | MDX entries, preview on home |
+| `/watch` | collection | paginated feed, RSS at `/watch/rss.xml` |
 | `/now` | Markdown | plain page, no collection |
-| `/mentions-legales` | Markdown | plain page, no collection |
+| `/legal` | Markdown | plain page, no collection |
 
 ## Testing
 

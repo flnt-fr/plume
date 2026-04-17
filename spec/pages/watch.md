@@ -1,4 +1,4 @@
-# spec: /veille
+# spec: /watch
 
 > Scope: content model, page behaviour, and rendering rules for the watch feed.
 
@@ -6,7 +6,7 @@
 
 ## 1. Purpose
 
-`/veille` is a chronological feed of curated links. Each entry points to an external resource with an optional comment from the author. Tags are decorative — they provide context at a glance but do not drive navigation or filtering.
+`/watch` is a chronological feed of curated links. Each entry points to an external resource with an optional comment from the author. Tags are decorative — they provide context at a glance but do not drive navigation or filtering.
 
 ---
 
@@ -22,7 +22,7 @@ Entries are MDX files in an Astro content collection. The collection schema is d
 | `url`          | `string`   | yes      | URL of the linked resource         |
 | `date`         | `date`     | yes      | Publication date of the entry      |
 | `tags`         | `string[]` | no       | Empty array if no tags             |
-| `source.name`  | `string`   | yes      | Display name of the source (e.g. `Journal du Hacker`) |
+| `source.name`  | `string`   | yes      | Display name of the source         |
 | `source.url`   | `string`   | yes      | URL of the source                  |
 
 ### Body
@@ -41,8 +41,8 @@ Entries are sorted by `date` descending. The most recent entry appears first.
 
 Entries are paginated statically. Each page displays **20 entries**.
 
-- Page 1: `/veille`
-- Page N: `/veille/${n}` (N ≥ 2)
+- Page 1: `/watch`
+- Page N: `/watch/${n}` (N ≥ 2)
 
 The total number of pages is determined at build time. Empty pages are not generated. If the total number of entries is ≤ 20, no pagination UI is rendered.
 
@@ -82,7 +82,7 @@ Pagination is static HTML — no JavaScript.
 
 ## 6. RSS feed
 
-An RSS feed is generated at build time and exposed at `/veille/rss.xml`.
+An RSS feed is generated at build time and exposed at `/watch/rss.xml`.
 
 Each entry in the feed includes:
 

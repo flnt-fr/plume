@@ -9,7 +9,7 @@
 This site is the online identity of a craft developer. It serves two distinct purposes:
 
 - **Portfolio** — demonstrate a way of working, not just a list of things built
-- **Veille** — share commented links on dev and AI, without friction
+- **Watch** — share commented links on dev and AI, without friction
 
 The site must reflect the same values as the code it presents: clarity, restraint, care.
 
@@ -20,14 +20,14 @@ The site must reflect the same values as the code it presents: clarity, restrain
 Seven sections, no more:
 
 - `/` — home / hero, includes contact information and links
-- `/a-propos` — short bio
+- `/about` — short bio
 - `/experiences` — professional experience and skills
-- `/veille` — link feed with optional comments
-- `/projets` — technical portfolio
+- `/watch` — link feed with optional comments
+- `/projects` — technical portfolio
 - `/now` — current focus and activities, in the spirit of [nownownow.com](https://nownownow.com)
-- `/mentions-legales` — legal notice (required by French law)
+- `/legal` — legal notice
 
-`/a-propos`, `/now`, and `/mentions-legales` are plain Markdown pages — no custom data model, no collection.
+`/about`, `/now`, and `/legal` are plain Markdown pages — no custom data model, no collection.
 
 Contact is handled on the home page. No dedicated contact section. Any new section must be justified against these seven. Scope does not grow by default.
 
@@ -41,11 +41,15 @@ Every element must earn its place. If removing it does not break meaning, remove
 
 ### Styling
 
-DaisyUI on top of Tailwind CSS. The active theme is **Flexoki**, applied in monochromatic mode — the accent palette is used sparingly, if at all. Colour conveys structure, not decoration.
+DaisyUI on top of Tailwind CSS. The active theme is **Flexoki**, in monochromatic mode — the accent palette is used sparingly, if at all. Colour conveys structure, not decoration.
+
+Two theme variants are defined — `flexoki-light` and `flexoki-dark` — and the active variant is selected automatically via `prefers-color-scheme`. No JavaScript is involved: the switch is pure CSS, handled by DaisyUI's `default`/`prefersdark` theme mechanism. No `data-theme` attribute is set on `<html>`.
 
 Use DaisyUI semantic tokens (`base-100`, `primary`, `neutral`, etc.) rather than raw Tailwind color utilities wherever possible — this keeps theming consistent and changes contained.
 
-Custom CSS is plain CSS. No SCSS, no preprocessor. Custom overrides go in component-scoped `<style>` blocks, not global files.
+Custom CSS is plain CSS. No SCSS, no preprocessor. The preferred location is a component-scoped `<style>` block. When styling MDX-rendered markup (which Astro's scoping cannot reach), a dedicated CSS file in `src/styles/` is acceptable, provided all selectors are prefixed with a wrapper class that acts as a manual scope.
+
+The base font size is `18px`, set on `:root` in `src/styles/global.css`. All rem-based sizing scales from this value.
 
 ### No decorative complexity
 
@@ -87,11 +91,12 @@ Current allowed dependencies:
 | `@tailwindcss/typography` | prod | `prose` class for Markdown page layouts |
 | `@astrojs/mdx` | prod | MDX support for content collections |
 | `@astrojs/sitemap` | prod | sitemap generation |
-| `@astrojs/rss` | prod | RSS feed for `/veille/rss.xml` |
+| `@astrojs/rss` | prod | RSS feed for `/watch/rss.xml` |
 | `zod` | prod | schema validation for content collections |
 | `@biomejs/biome` | dev | linting and formatting |
 | `@astrojs/check` + `typescript` | dev | `astro check` type checking |
 | `playwright` + `@axe-core/playwright` | dev | end-to-end and accessibility tests |
+| `astro-compress` | prod | HTML/CSS/SVG minification at build time |
 
 ---
 
@@ -110,13 +115,13 @@ src/
 ├── content/      # Astro content collections
 ├── i18n/         # UI labels and static strings
 │   ├── index.ts  # re-exports the active language — the only file to change when switching language
-│   └── fr.ts     # French labels
+│   └── en.ts     # English labels
 ├── layouts/
 ├── pages/        # data fetching and transformation live here
 └── styles/       # global resets and DaisyUI theme overrides only
 ```
 
-All static UI labels (navigation, section titles, buttons, fallback text) are defined in `src/i18n/fr.ts` and imported everywhere via `src/i18n/index.ts`. No hardcoded strings in components or pages.
+All static UI labels (navigation, section titles, buttons, fallback text) are defined in `src/i18n/en.ts` and imported everywhere via `src/i18n/index.ts`. No hardcoded strings in components or pages.
 
 Import convention throughout the project:
 
@@ -129,7 +134,7 @@ import { ui } from '@/i18n'
 - No data fetching inside components
 - No conditional logic beyond simple prop-driven rendering
 - All props are explicitly typed via interfaces defined in `components/types/`
-- `Card` is the shared visual unit for all list-based content (experiences, projects, veille entries). It wraps the DaisyUI `card` component and is the only place where card styling is defined.
+- `Card` is the shared visual unit for all list-based content (experiences, projects, watch entries). It wraps the DaisyUI `card` component and is the only place where card styling is defined.
 
 ---
 

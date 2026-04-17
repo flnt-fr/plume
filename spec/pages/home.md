@@ -6,9 +6,7 @@
 
 ## 1. Purpose
 
-The home page establishes identity at a glance and provides immediate access to contact and social links. It also surfaces the most recent veille entries to signal active curation.
-
-All content on this page is written in French.
+The home page establishes identity at a glance and provides immediate access to contact and social links. It also surfaces the most recent watch entries to signal active curation.
 
 ---
 
@@ -23,7 +21,7 @@ Markdown file. The frontmatter holds identity fields; the body holds the descrip
 | Field   | Type     | Required | Description                                        |
 |---------|----------|----------|----------------------------------------------------|
 | `name`  | `string` | yes      | Full name                                          |
-| `title` | `string` | yes      | Professional title (e.g. `Développeur craft & IA`) |
+| `title` | `string` | yes      | Professional title (e.g. `Software Developer`)    |
 | `email` | `string` | yes      | Contact email address                              |
 
 The Markdown body is required. It is the short pitch displayed in the hero — a few sentences. It is rendered as HTML via the Astro `Content` component passed as a slot to `Hero`.
@@ -41,9 +39,9 @@ The Markdown body is required. It is the short pitch displayed in the hero — a
 The page renders four sections in order:
 
 1. **Hero** — identity and contact
-2. **Liens** — social and contact links
-3. **Projets** — preview of the most recent projects
-4. **Veille** — preview of the most recent veille entries
+2. **Links** — social and contact links
+3. **Projects** — preview of the most recent projects
+4. **Watch** — preview of the most recent watch entries
 
 ---
 
@@ -56,7 +54,7 @@ The hero renders:
 - **Name** — primary heading, from `hero.md` frontmatter
 - **Title** — professional title, visually secondary to the name, from `hero.md` frontmatter
 - **Description** — rendered from the `hero.md` body via the `Content` slot
-- **CTA** — a mailto link to `email`, labelled `Me contacter`
+- **CTA** — a mailto link to `email`, labelled `Contact me`
 
 No image, no background, no decorative elements.
 
@@ -84,14 +82,14 @@ Each entry renders:
 - **Description** — body rendered as plain text (no MDX processing)
 - **Links** — flat list of external links, same as the full card
 
-The section includes a link to `/projets` to access the full list.
+The section includes a link to `/projects` to access the full list.
 
 
 ---
 
-## 7. Veille preview rendering
+## 7. Watch preview rendering
 
-Displays the **`VEILLE_PREVIEW_COUNT`** most recent veille entries, sorted by `date` descending. Fetched at build time from the veille content collection. `VEILLE_PREVIEW_COUNT` is defined in `src/config.ts` and adjusted based on visual fit.
+Displays the **`VEILLE_PREVIEW_COUNT`** most recent watch entries, sorted by `date` descending. Fetched at build time from the watch content collection. `VEILLE_PREVIEW_COUNT` is defined in `src/config.ts` and adjusted based on visual fit.
 
 Each entry renders:
 
@@ -99,12 +97,12 @@ Each entry renders:
 - **Source** — `source.name` as a link to `source.url`
 - **Date** — formatted as `DD MMM YYYY`
 
-Tags and comments are not shown in the preview. The section includes a link to `/veille` to access the full feed.
+Tags and comments are not shown in the preview. The section includes a link to `/watch` to access the full feed.
 
 ---
 
 ## 8. Out of scope
 
 - Contact form — a mailto link is sufficient
-- Featured or pinned veille entries
+- Featured or pinned watch entries
 - Animation or scroll-triggered effects

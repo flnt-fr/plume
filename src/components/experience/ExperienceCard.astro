@@ -1,7 +1,7 @@
 ---
+import Card from '@/components/Card.astro';
 import { ui } from '@/i18n';
-import Card from './Card.astro';
-import type { ExperienceCardProps } from './types/ExperienceCard';
+import type { ExperienceCardProps } from './ExperienceCard';
 
 type Props = ExperienceCardProps;
 const { role, company, period, tags, hasBody } = Astro.props;

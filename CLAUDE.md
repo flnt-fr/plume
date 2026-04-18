@@ -22,7 +22,10 @@ This is an [Astro](https://astro.build) site (v6) — static generation only, no
 
 - `src/pages/` — file-based routing; `.astro` and `.md` files become pages
 - `src/components/` — purely presentational `.astro` components, typed props, no data fetching
-- `src/components/types/` — shared TypeScript interfaces for component props
+  - `src/components/watch/` — watch feature components (`WatchCard`, `WatchPreview`, `WatchPreviewCard`) + their TypeScript type files
+  - `src/components/project/` — project feature components (`ProjectCard`, `ProjectPreviewCard`, `ProjectsPreview`) + their TypeScript type files
+  - `src/components/experience/` — experience feature components (`ExperienceCard`, `SkillsTable`) + their TypeScript type files
+  - `src/components/types/` — TypeScript interfaces for shared/root-level components (`Hero`, `Pagination`, `SocialLinks`)
 - `src/content/` — Astro content collections (watch entries, experience entries, project entries)
 - `src/layouts/` — base layout with SEO meta tags
 - `src/data/` — static data files (`home.json`, `skills.json`, `hero.md`, `footer.mdx`)

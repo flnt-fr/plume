@@ -1,5 +1,6 @@
 import site from '@/data/site.json';
 
+export const IS_DEMO = site.isDemo;
 export const siteUrl = site.siteUrl;
 export const siteName = site.siteName;
 export const defaultTitle = site.defaultTitle;

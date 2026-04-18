@@ -1,7 +1,7 @@
 ---
 import { ui } from '@/i18n';
 import ProjectPreviewCard from './ProjectPreviewCard.astro';
-import type { ProjectsPreviewProps } from './types/ProjectsPreview';
+import type { ProjectsPreviewProps } from './ProjectsPreview';
 
 type Props = ProjectsPreviewProps;
 const { entries } = Astro.props;
@@ -12,7 +12,7 @@ function formatMonth(date: Date): string {
 ---
 
 <section aria-labelledby="projects-preview-heading">
-  <h2 id="projects-preview-heading" class="text-xl font-semibold mb-1">{ui.projects.title}</h2>
+  <h2 id="projects-preview-heading" class="text-2xl font-bold mb-1">{ui.projects.title}</h2>
   <ol>
     {
       entries.map(({ title, date, stack, links, body }) => (

@@ -1,5 +1,5 @@
 ---
-name: "Your Name"
+name: "Plume"
 title: "Software Developer"
 email: "hello@example.com"
 ---

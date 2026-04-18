@@ -1,8 +1,9 @@
 {
+  "isDemo": true,
   "siteUrl": "https://example.com",
-  "siteName": "Your Name",
-  "defaultTitle": "Your Name — Developer",
-  "defaultDescription": "Developer sharing work, projects and a curated technology watch.",
+  "siteName": "Plume",
+  "defaultTitle": "Plume — Astro Portfolio Theme",
+  "defaultDescription": "Plume is a minimal Astro portfolio theme with DaisyUI, Flexoki, content collections, RSS feed, and full accessibility.",
   "defaultOgImage": "/og-default.png",
   "veillePreviewCount": 3,
   "veillePageSize": 20,

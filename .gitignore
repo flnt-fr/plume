@@ -1,3 +1,6 @@
+# Tests
+test-results/
+
 # build output
 dist/
 # generated types

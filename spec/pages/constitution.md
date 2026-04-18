@@ -51,6 +51,19 @@ Custom CSS is plain CSS. No SCSS, no preprocessor. The preferred location is a c
 
 The base font size is `18px`, set on `:root` in `src/styles/global.css`. All rem-based sizing scales from this value.
 
+### Typography scale
+
+Markdown pages use `MarkdownLayout.astro`, which wraps content in the `prose` class (`@tailwindcss/typography`). This is the typographic reference — do not modify it.
+
+`.astro` pages must match the prose heading scale manually:
+
+| Element | Classes |
+|---|---|
+| Page h1 | `text-4xl font-bold` |
+| Section h2 | `text-2xl font-bold` |
+
+Card and component headings (item titles, preview headings) are not document headings and are exempt from this scale.
+
 ### No decorative complexity
 
 No gradients, no animations unless they carry meaning, no shadows unless they encode depth. Typography and whitespace do the work.
@@ -110,8 +123,11 @@ Pages own their data-fetching and transformation logic. Components are purely pr
 
 ```
 src/
-├── components/   # .astro templates only — typed props, no logic
-│   └── types/    # shared TypeScript types and interfaces
+├── components/             # .astro templates only — typed props, no logic
+│   ├── watch/              # watch feature: WatchCard, WatchPreview, WatchPreviewCard + their .ts types
+│   ├── project/            # project feature: ProjectCard, ProjectPreviewCard, ProjectsPreview + their .ts types
+│   ├── experience/         # experience feature: ExperienceCard, SkillsTable + their .ts types
+│   └── types/              # TypeScript types for shared/root-level components (Hero, Pagination, SocialLinks)
 ├── content/      # Astro content collections
 ├── i18n/         # UI labels and static strings
 │   ├── index.ts  # re-exports the active language — the only file to change when switching language
@@ -133,8 +149,26 @@ import { ui } from '@/i18n'
 
 - No data fetching inside components
 - No conditional logic beyond simple prop-driven rendering
-- All props are explicitly typed via interfaces defined in `components/types/`
-- `Card` is the shared visual unit for all list-based content (experiences, projects, watch entries). It wraps the DaisyUI `card` component and is the only place where card styling is defined.
+- All props are explicitly typed via interfaces co-located with the component (same directory, `.ts` extension)
+- Shared/root-level component types live in `components/types/`
+- `Card` is the shared visual unit for all list-based content (experiences, projects, watch entries). It wraps the DaisyUI `card` component and is the only place where card styling is defined. It lives at the root of `components/` and is imported via `@/components/Card.astro`.
+
+### Component grouping
+
+Feature-specific components are grouped in subdirectories:
+
+| Directory | Components | Used by |
+|---|---|---|
+| `components/watch/` | `WatchCard`, `WatchPreview`, `WatchPreviewCard` | `/watch`, `/` |
+| `components/project/` | `ProjectCard`, `ProjectPreviewCard`, `ProjectsPreview` | `/projects`, `/` |
+| `components/experience/` | `ExperienceCard`, `SkillsTable` | `/experiences` |
+| `components/` (root) | `Card`, `DemoBanner`, `Footer`, `Hero`, `Pagination`, `SocialLinks` | multiple pages |
+
+New feature-specific components must go into the corresponding subdirectory. Truly shared components (used by two or more features) stay at the root level.
+
+### Demo banner
+
+`DemoBanner` is rendered in `BaseLayout` when `isDemo: true` in `src/data/site.json` (exported as `IS_DEMO` from `src/config.ts`). Set it to `false`, or remove the component from `BaseLayout`, to hide the banner on a real deployment.
 
 ---
 

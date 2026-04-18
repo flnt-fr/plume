@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Pagination from '@/components/Pagination.astro';
-import ProjectCard from '@/components/ProjectCard.astro';
+import ProjectCard from '@/components/project/ProjectCard.astro';
 import { PROJECTS_PAGE_SIZE } from '@/config';
 import { ui } from '@/i18n';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -26,7 +26,7 @@ function formatMonth(dateStr: string): string {
 
 <BaseLayout {title} {description} canonicalPath="/projects">
   <div class="max-w-2xl mx-auto px-6 py-16">
-    <h1 class="text-2xl font-semibold mb-8">{ui.projects.title}</h1>
+    <h1 class="text-4xl font-bold mb-8">{ui.projects.title}</h1>
 
     <ol class="flex flex-col gap-4">
       {

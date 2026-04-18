@@ -1,7 +1,7 @@
 ---
+import Card from '@/components/Card.astro';
 import { ui } from '@/i18n';
-import Card from './Card.astro';
-import type { ProjectCardProps } from './types/ProjectCard';
+import type { ProjectCardProps } from './ProjectCard';
 
 type Props = ProjectCardProps;
 const { id, title, date, stack, links, hasBody } = Astro.props;

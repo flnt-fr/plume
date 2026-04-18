@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
-import ExperienceCard from '@/components/ExperienceCard.astro';
-import SkillsTable from '@/components/SkillsTable.astro';
+import ExperienceCard from '@/components/experience/ExperienceCard.astro';
+import SkillsTable from '@/components/experience/SkillsTable.astro';
 import skillsData from '@/data/skills.json';
 import { ui } from '@/i18n';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -30,7 +30,7 @@ function formatPeriod(startDate: string, endDate?: string): string {
   <div class="max-w-2xl mx-auto px-6 py-16">
 
     <section aria-labelledby="experiences-heading">
-      <h1 id="experiences-heading" class="text-2xl font-semibold mb-8">{ui.experiences.title}</h1>
+      <h1 id="experiences-heading" class="text-4xl font-bold mb-8">{ui.experiences.title}</h1>
       <ol class="flex flex-col gap-4" reversed>
         {
           sorted.map(async (entry) => {
@@ -54,7 +54,7 @@ function formatPeriod(startDate: string, endDate?: string): string {
     </section>
 
     <section aria-labelledby="skills-heading" class="mt-16">
-      <h2 id="skills-heading" class="text-2xl font-semibold mb-6">{ui.experiences.skillsTitle}</h2>
+      <h2 id="skills-heading" class="text-2xl font-bold mb-6">{ui.experiences.skillsTitle}</h2>
       <SkillsTable groups={skillsData} />
     </section>
 

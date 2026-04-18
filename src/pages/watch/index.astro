@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Pagination from '@/components/Pagination.astro';
-import WatchCard from '@/components/WatchCard.astro';
+import WatchCard from '@/components/watch/WatchCard.astro';
 import { VEILLE_PAGE_SIZE } from '@/config';
 import { ui } from '@/i18n';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -25,7 +25,7 @@ const entriesWithContent = await Promise.all(
 <BaseLayout {title} {description} canonicalPath="/watch">
   <div class="max-w-2xl mx-auto px-6 py-16">
     <div class="flex items-baseline justify-between mb-8">
-      <h1 class="text-2xl font-semibold">{ui.watch.title}</h1>
+      <h1 class="text-4xl font-bold">{ui.watch.title}</h1>
       <a
         href="/watch/rss.xml"
         class="text-sm text-base-content/70 hover:text-base-content transition-colors"

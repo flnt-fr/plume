@@ -1,6 +1,6 @@
 {
   "isDemo": true,
-  "siteUrl": "https://example.com",
+  "siteUrl": "https://plume.flnt.fr",
   "siteName": "Plume",
   "defaultTitle": "Plume — Astro Portfolio Theme",
   "defaultDescription": "Plume is a minimal Astro portfolio theme with DaisyUI, Flexoki, content collections, RSS feed, and full accessibility.",

@@ -8,7 +8,8 @@
 
 - Every pull request runs the full test suite before merge
 - Every commit on `main` — regardless of origin — runs the full test suite
-- Dependabot keeps dependencies up to date; its PRs are subject to the same pipeline as any other PR and auto-merge if tests pass
+- Dependabot keeps dependencies up to date; its PRs are subject to the same pipeline as any other PR and must be reviewed and merged manually
+- All GitHub Actions are pinned to a commit SHA (not a tag) to prevent supply chain attacks; Dependabot keeps those SHAs up to date
 - Artifacts are retained for **7 days** maximum — enough to investigate a failure, no long-term storage
 
 ---
@@ -33,27 +34,17 @@ Runs on: `pull_request` targeting `main`, `push` to `main`.
 
 Steps in order:
 
-1. **Checkout** — `actions/checkout@v4`
-2. **Setup Node.js** — `actions/setup-node@v4`, version `22`, with `npm` cache
+1. **Checkout** — `actions/checkout`, pinned by SHA
+2. **Setup Node.js** — `actions/setup-node`, version `22`, with `npm` cache, pinned by SHA
 3. **Install dependencies** — `npm ci`
-4. **Cache Playwright browsers** — `actions/cache@v4`, key on `package-lock.json` hash
+4. **Cache Playwright browsers** — `actions/cache`, key on `package-lock.json` hash, pinned by SHA
 5. **Install Playwright browsers** — `chromium` only, skipped on cache hit (system deps still installed)
 6. **Lint and format** — `npm run check` (Biome — blocks on lint or format errors)
 7. **Build** — `npm run build` (includes `astro-compress` minification)
 8. **Test** — `npx playwright test --reporter=github,html` (all suites; `github` reporter annotates PRs inline)
-9. **Upload Playwright report** — `actions/upload-artifact@v4`, only on failure, `retention-days: 7`
+9. **Upload Playwright report** — `actions/upload-artifact`, only on failure, `retention-days: 7`, pinned by SHA
 
 All steps run sequentially. A failure at any step aborts the workflow.
-
-### `dependabot-automerge.yml` — auto-merge
-
-Runs on: `pull_request` from `dependabot[bot]`.
-
-Steps:
-
-1. **Enable auto-merge** — `gh pr merge --auto --squash` via `GITHUB_TOKEN`
-
-Auto-merge activates once all required status checks (i.e. `ci`) pass. GitHub enforces this — the merge does not happen immediately on workflow trigger.
 
 ---
 
@@ -61,7 +52,7 @@ Auto-merge activates once all required status checks (i.e. `ci`) pass. GitHub en
 
 **File:** `.github/dependabot.yml`
 
-Dependabot monitors `npm` dependencies and opens pull requests for updates weekly.
+Dependabot monitors both `npm` packages and `github-actions` used in workflows. It opens pull requests for updates weekly. PRs are never auto-merged — they require manual review before merge.
 
 ```yaml
 version: 2
@@ -72,9 +63,16 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "chore(deps)"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(deps)"
 ```
 
-Auto-merge applies to all Dependabot PRs — patch, minor, and major. If a major update breaks the build or tests, the pipeline blocks the merge naturally.
+The `github-actions` ecosystem monitors SHA-pinned actions in workflow files and opens PRs when a newer commit SHA is available for the same tag.
 
 ---
 

@@ -90,7 +90,7 @@ axe-core detects approximately 50% of WCAG issues automatically. It does not rep
 
 **Strategy:**
 
-1. Parse `sitemap.xml` to get the full list of pages
+1. Fetch `sitemap-0.xml` (falling back to `sitemap.xml`) to get the full list of pages
 2. For each page, run an axe scan scoped to WCAG 2.1 A and AA tags: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`
 3. Assert that the violations array is empty
 

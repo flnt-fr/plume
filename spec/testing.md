@@ -38,7 +38,7 @@ The test suite must never run against `astro dev`. It must target what will actu
 
 **Strategy:**
 
-1. Fetch and parse `sitemap.xml` to get the full list of pages
+1. Fetch `sitemap-0.xml` (falling back to `sitemap.xml`) to get the full list of pages — `@astrojs/sitemap` generates a `sitemap-index.xml` + `sitemap-0.xml` pair; tests try the numbered file first
 2. For each page, navigate to it and collect all `<a href>` attributes
 3. Filter to internal links only (same origin, exclude `mailto:`, `tel:`, anchors)
 4. For each internal link, assert the response status is 200
@@ -87,7 +87,7 @@ Port 4322 is used to avoid conflicts with the dev server (`astro dev`) running o
 
 **Strategy:**
 
-1. Fetch `/veille/rss.xml` and assert the response status is 200
+1. Fetch `/watch/rss.xml` and assert the response status is 200
 2. Assert the response `Content-Type` is `application/xml` or `text/xml`
 3. Parse the feed and assert the following for each item:
     - `title` is present and non-empty
@@ -106,7 +106,7 @@ Port 4322 is used to avoid conflicts with the dev server (`astro dev`) running o
 
 **Strategy:**
 
-1. Parse `sitemap.xml` to get the full list of pages — excludes `/veille/rss.xml` and `/sitemap.xml` by definition since they are not HTML pages
+1. Fetch `sitemap-0.xml` (falling back to `sitemap.xml`) to get the full list of pages — excludes `/watch/rss.xml` and `/sitemap.xml` by definition since they are not HTML pages
 2. For each page, assert the presence of the following elements:
     - exactly one `<header>` containing a `<nav>`
     - exactly one `<main>`

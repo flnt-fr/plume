@@ -39,12 +39,12 @@ Entries are sorted by `date` descending. The most recent entry appears first.
 
 ### Pagination
 
-Entries are paginated statically. Each page displays **20 entries**.
+Entries are paginated statically. Each page displays **`VEILLE_PAGE_SIZE`** entries (defined in `src/config.ts`, default 20).
 
 - Page 1: `/watch`
 - Page N: `/watch/${n}` (N ≥ 2)
 
-The total number of pages is determined at build time. Empty pages are not generated. If the total number of entries is ≤ 20, no pagination UI is rendered.
+The total number of pages is determined at build time. Empty pages are not generated. If the total number of entries is ≤ `VEILLE_PAGE_SIZE`, no pagination UI is rendered.
 
 ### Tags
 
@@ -82,17 +82,17 @@ Pagination is static HTML — no JavaScript.
 
 ## 6. RSS feed
 
-An RSS feed is generated at build time and exposed at `/watch/rss.xml`.
+An RSS feed is generated at build time and exposed at `/watch/rss.xml` (file at `src/pages/watch/rss.xml.ts`).
 
 Each entry in the feed includes:
 
 - `title` — the entry title
 - `link` — the external `url`
 - `pubDate` — the entry `date`
-- `description` — the comment body if present, empty otherwise
-- `source` — `source.name` linking to `source.url`
+- `description` — the comment body if present, empty string otherwise
+- `source` — rendered as `<source url="{source.url}">{source.name}</source>` in `customData`
 
-The feed is generated using `@astrojs/rss`. Tags are not included in the feed.
+The feed is generated using `@astrojs/rss`. Tags are not included in the feed. Entries are sorted by `date` descending.
 
 ---
 

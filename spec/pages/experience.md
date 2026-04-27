@@ -8,8 +8,6 @@
 
 `/experiences` presents a professional overview in two parts: a reverse-chronological timeline of work experience, followed by a flat list of skills and tools. The page targets potential clients or collaborators evaluating a freelance profile.
 
-All content on this page is written in French.
-
 ---
 
 ## 2. Content model
@@ -67,8 +65,8 @@ Skills are not MDX — they are labels, not authored content.
 
 The page renders two sections in order:
 
-1. **Expériences** — timeline of work entries
-2. **Compétences** — flat list of tools and technologies
+1. **Experience** — timeline of work entries
+2. **Skills** — flat list of tools and technologies
 
 No tabs, no toggles, no JS. Both sections are always visible.
 
@@ -82,7 +80,7 @@ Each entry is rendered using the shared `Card` component (DaisyUI `card`, `card-
 
 - **Role** — job title
 - **Company** — company or client name
-- **Period** — formatted as `MMM YYYY – MMM YYYY` (e.g. `Jan 2022 – Mar 2024`). If `endDate` is absent, renders as `MMM YYYY – Aujourd'hui`
+- **Period** — formatted as `MMM YYYY – MMM YYYY` (e.g. `Jan 2022 – Mar 2024`). If `endDate` is absent, renders as `MMM YYYY – Today`
 - **Body** — rendered only if present
 - **Tags** — rendered only if present, as a flat list of labels, not interactive
 
@@ -94,7 +92,7 @@ Entries are visually separated to suggest a timeline. No decorative timeline lin
 
 Skills are displayed as a table. Each row represents a category. The first column contains the category name, the second column contains the skills as a flat inline list.
 
-| Catégorie      | Compétences                        |
+| Category       | Skills                             |
 |----------------|------------------------------------|
 | Langages       | TypeScript, HTML, CSS, …           |
 | Frameworks     | Astro, …                           |
@@ -109,5 +107,4 @@ No proficiency level, no icons, no interactive filtering.
 
 - Downloadable PDF résumé
 - Proficiency levels or skill ratings
-- Grouping skills by category
 - Filtering or sorting

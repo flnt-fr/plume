@@ -29,8 +29,20 @@ Astro template syntax (`.astro` files) is not fully supported by Biome. The Type
 
 ```json
 {
-  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
-  "organizeImports": { "enabled": true },
+  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -43,14 +55,57 @@ Astro template syntax (`.astro` files) is not fully supported by Biome. The Type
     "indentWidth": 2,
     "lineWidth": 100
   },
+  "css": {
+    "parser": { "tailwindDirectives": true },
+    "formatter": { "enabled": false },
+    "linter": { "enabled": false }
+  },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
       "semicolons": "always"
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["tests/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.css"],
+      "formatter": { "enabled": false },
+      "linter": { "enabled": false }
+    },
+    {
+      "includes": ["*.config.ts", "astro.config.ts"],
+      "linter": { "enabled": false }
+    }
+  ]
 }
 ```
+
+Key overrides:
+- **`.astro` files**: `noUnusedVariables` and `noUnusedImports` are disabled — Astro's template syntax uses imports that Biome cannot track
+- **`tests/`**: `noNonNullAssertion` is disabled — test code often deals with possibly-null DOM queries
+- **CSS files**: formatter and linter disabled — Biome does not lint CSS in this project
+- **Config files**: linter disabled — `astro.config.ts` uses patterns (type assertions, dynamic imports) that produce false positives
 
 ### Scripts
 

@@ -8,7 +8,7 @@
 
 SEO is handled at build time — no client-side meta injection. Every page renders its meta tags server-side via Astro layouts. There is no dynamic SEO, no per-user personalisation.
 
-The site language is French. All meta content is written in French.
+The site language is English. All meta content is written in English.
 
 ---
 
@@ -18,7 +18,7 @@ Defined in `src/config.ts` and consumed by the base layout.
 
 | Field              | Value                                                        |
 |--------------------|--------------------------------------------------------------|
-| `lang`             | `fr`                                                         |
+| `lang`             | `en`                                                         |
 | `siteName`         | The author's name or chosen site name                        |
 | `defaultTitle`     | Fallback `<title>` if no page-level title is provided        |
 | `defaultDescription` | Fallback meta description                                  |
@@ -36,7 +36,7 @@ Every page uses a single base layout that renders the following in `<head>`:
 ```html
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<html lang="fr">
+<html lang="en">
 
 <title>{pageTitle} — {siteName}</title>
 <meta name="description" content="{description}" />
@@ -52,7 +52,7 @@ Every page uses a single base layout that renders the following in `<head>`:
 <meta property="og:description" content="{description}" />
 <meta property="og:url" content="{canonicalUrl}" />
 <meta property="og:image" content="{siteUrl}/og-default.png" />
-<meta property="og:locale" content="fr_FR" />
+<meta property="og:locale" content="en_US" />
 ```
 
 ### Twitter / X card
@@ -68,8 +68,8 @@ Every page uses a single base layout that renders the following in `<head>`:
 
 ```html
 <link rel="alternate" type="application/rss+xml"
-  title="{siteName} — Veille"
-  href="{siteUrl}/veille/rss.xml" />
+  title="{siteName} — Watch"
+  href="{siteUrl}/watch/rss.xml" />
 ```
 
 ---
@@ -80,19 +80,21 @@ Each page provides its own `title` and `description` as props to the base layout
 
 | Page               | Title                              | Description                                      |
 |--------------------|------------------------------------|--------------------------------------------------|
-| `/`                | `{name} — {title}`                 | Short pitch from `home.json`                     |
-| `/a-propos`        | `À propos`                         | Extracted from the Markdown frontmatter          |
-| `/experiences`     | `Expériences`                      | Static, defined in the page                      |
-| `/veille`          | `Veille`                           | Static, defined in the page                      |
-| `/veille/{n}`      | `Veille — Page {n}`                | Static, defined in the page                      |
-| `/projets`         | `Projets`                          | Static, defined in the page                      |
-| `/projets/{n}`     | `Projets — Page {n}`               | Static, defined in the page                      |
+| `/`                | `{name} — {title}` (no siteName suffix) | `hero.md` body compiled to HTML, tags stripped |
+| `/about`           | `About`                            | Extracted from the Markdown frontmatter          |
+| `/experiences`     | `Experience`                       | Static, defined in the page                      |
+| `/watch`           | `Watch`                            | Static, defined in the page                      |
+| `/watch/{n}`       | `Watch — Page {n}`                 | Static, defined in the page                      |
+| `/projects`        | `Projects`                         | Static, defined in the page                      |
+| `/projects/{n}`    | `Projects — Page {n}`              | Static, defined in the page                      |
 | `/now`             | `Now`                              | Extracted from the Markdown frontmatter          |
-| `/mentions-legales`| `Mentions légales`                 | Static, defined in the page                      |
+| `/legal`           | `Legal notice`                     | Extracted from the Markdown frontmatter          |
 
 ### Canonical URL
 
-The canonical URL is always the full absolute URL of the current page, constructed from `siteUrl` + the current path. Pagination pages (`/veille/2`, `/projets/2`, etc.) each have their own distinct canonical URL.
+The canonical URL is always the full absolute URL of the current page, constructed from `siteUrl` + the current path. Pagination pages (`/watch/2`, `/projects/2`, etc.) each have their own distinct canonical URL.
+
+The home page explicitly passes `canonicalPath="/"` and `appendSiteName={false}` to the base layout so the `<title>` is rendered as `{name} — {title}` without the siteName appended again.
 
 ---
 
@@ -104,13 +106,34 @@ Recommended dimensions: **1200×630px**.
 
 ---
 
+## 5b. Favicon
+
+Two favicon files are served from `public/`:
+
+```html
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" />
+```
+
+Both declarations are present in `BaseLayout.astro`. The SVG favicon takes priority in browsers that support it; the `.ico` is the fallback.
+
+---
+
 ## 6. Sitemap
 
 Generated by `@astrojs/sitemap` at build time. Exposed at `/sitemap-index.xml`.
 
 The sitemap excludes:
-- `/veille/rss.xml`
-- Pagination pages beyond page 1 (`/veille/2`, `/veille/3`, `/projets/2`, `/projets/3`, etc.)
+- `/watch/rss.xml`
+- Pagination pages beyond page 1 (`/watch/2`, `/watch/3`, `/projects/2`, `/projects/3`, etc.)
+
+The filter is implemented in `astro.config.ts` via the sitemap integration's `filter` callback:
+
+```ts
+sitemap({
+  filter: (page) => !/\/(watch|projects)\/\d+\/?$/.test(page),
+})
+```
 
 ---
 

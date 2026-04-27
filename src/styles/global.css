@@ -12,34 +12,31 @@
   default: true;
   color-scheme: light;
 
-  --color-base-100: oklch(99% 0.009 96);
-  --color-base-200: oklch(95% 0.009 82);
-  --color-base-300: oklch(91% 0.008 78);
-  --color-base-content: oklch(18% 0.005 52);
+  --color-base-100: #FFFCF0;
+  --color-base-200: #F2F0E5;
+  --color-base-300: #E6E4D9;
+  --color-base-content: #100F0F;
 
-  --color-primary: oklch(27% 0.006 53);
-  --color-primary-content: oklch(99% 0.009 96);
+  --color-primary: #100F0F;
+  --color-primary-content: #FFFCF0;
 
-  --color-secondary: oklch(83% 0.007 63);
-  --color-secondary-content: oklch(18% 0.005 52);
+  --color-secondary: #CECDC3;
+  --color-secondary-content: #100F0F;
 
-  --color-accent: oklch(49% 0.16 22);
-  --color-accent-content: oklch(97% 0.008 64);
+  --color-accent: #D14D41;
+  --color-accent-content: #FFFCF0;
 
-  --color-neutral: oklch(91% 0.008 78);
-  --color-neutral-content: oklch(18% 0.005 52);
+  --color-neutral: #1C1B1A;
+  --color-neutral-content: #FFFCF0;
 
-  --color-info: oklch(50% 0.12 240);
-  --color-info-content: oklch(97% 0.008 64);
-
-  --color-success: oklch(57% 0.12 127);
-  --color-success-content: oklch(97% 0.008 64);
-
-  --color-warning: oklch(66% 0.14 75);
-  --color-warning-content: oklch(13.35% 0.004 50);
-
-  --color-error: oklch(49% 0.16 22);
-  --color-error-content: oklch(97% 0.008 64);
+  --color-info: #4385BE;
+  --color-info-content: #FFFCF0;
+  --color-success: #879A39;
+  --color-success-content: #FFFCF0;
+  --color-warning: #D0A215;
+  --color-warning-content: #100F0F;
+  --color-error: #D14D41;
+  --color-error-content: #FFFCF0;
 }
 
 @plugin "daisyui/theme" {
@@ -47,34 +44,31 @@
   prefersdark: true;
   color-scheme: dark;
 
-  --color-base-100: oklch(13.35% 0.004 50);
-  --color-base-200: oklch(17.8% 0.005 52);
-  --color-base-300: oklch(22.5% 0.005 52);
-  --color-base-content: oklch(82.5% 0.007 63);
+  --color-base-100: #100F0F;
+  --color-base-200: #1C1B1A;
+  --color-base-300: #282726;
+  --color-base-content: #CECDC3;
 
-  --color-primary: oklch(54% 0.006 56);
-  --color-primary-content: oklch(13.35% 0.004 50);
+  --color-primary: #CECDC3;
+  --color-primary-content: #100F0F;
 
-  --color-secondary: oklch(36% 0.006 54);
-  --color-secondary-content: oklch(82.5% 0.007 63);
+  --color-secondary: #403E3C;
+  --color-secondary-content: #CECDC3;
 
-  --color-accent: oklch(49% 0.16 22);
-  --color-accent-content: oklch(97% 0.008 64);
+  --color-accent: #AF3029;
+  --color-accent-content: #FFFCF0;
 
-  --color-neutral: oklch(17.8% 0.005 52);
-  --color-neutral-content: oklch(82.5% 0.007 63);
+  --color-neutral: #403E3C;
+  --color-neutral-content: #FFFCF0;
 
-  --color-info: oklch(50% 0.12 240);
-  --color-info-content: oklch(97% 0.008 64);
-
-  --color-success: oklch(57% 0.12 127);
-  --color-success-content: oklch(97% 0.008 64);
-
-  --color-warning: oklch(66% 0.14 75);
-  --color-warning-content: oklch(13.35% 0.004 50);
-
-  --color-error: oklch(49% 0.16 22);
-  --color-error-content: oklch(97% 0.008 64);
+  --color-info: #4385BE;
+  --color-info-content: #FFFCF0;
+  --color-success: #879A39;
+  --color-success-content: #FFFCF0;
+  --color-warning: #D0A215;
+  --color-warning-content: #100F0F;
+  --color-error: #D14D41;
+  --color-error-content: #FFFCF0;
 }
 
 /* External link icon — Remix Icon ri-external-link-line */

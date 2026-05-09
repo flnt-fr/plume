@@ -1,0 +1,35 @@
+---
+import NavItem from '@/components/NavItem.astro';
+import NavMenuItem from '@/components/NavMenuItem.astro';
+import { siteName } from '@/config';
+import { ui } from '@/i18n';
+
+const navLinks = [
+  { href: '/about', label: ui.nav.about },
+  { href: '/experiences', label: ui.nav.experiences },
+  { href: '/projects', label: ui.nav.projects },
+  { href: '/watch', label: ui.nav.watch },
+  { href: '/now', label: ui.nav.now },
+];
+---
+
+<header class="border-b border-base-300">
+  <div class="max-w-2xl mx-auto px-6 py-4 flex items-center gap-8">
+    <a href="/" class="font-mono text-sm font-semibold shrink-0">{siteName}</a>
+    <nav aria-label={ui.nav.ariaLabel} class="hidden sm:block">
+      <ul class="flex gap-x-6">
+        {navLinks.map(({ href, label }) => <NavItem href={href} label={label} />)}
+      </ul>
+    </nav>
+    <details class="dropdown dropdown-end sm:hidden ml-auto">
+      <summary class="btn btn-ghost btn-sm p-1" aria-label={ui.nav.ariaLabel}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 h-5 stroke-current" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+      </summary>
+      <ul class="dropdown-content menu bg-base-100 border border-base-300 rounded-box w-40 p-2 mt-1 z-50">
+        {navLinks.map(({ href, label }) => <NavMenuItem href={href} label={label} />)}
+      </ul>
+    </details>
+  </div>
+</header>

@@ -40,6 +40,15 @@ The theme adapts automatically to the OS colour preference — no JavaScript req
 </details>
 
 <details>
+<summary>Mobile — Light / Dark</summary>
+
+| Light (default) | Dark (`prefers-color-scheme: dark`) |
+|---|---|
+| ![Home mobile — light](docs/home-mobile-light.png) | ![Home mobile — dark](docs/home-mobile-dark.png) |
+
+</details>
+
+<details>
 <summary>Watch / Experiences</summary>
 
 | Watch | Experiences |
@@ -432,12 +441,27 @@ npm run build
 node --input-type=module << 'EOF'
 import { chromium } from 'playwright';
 const browser = await chromium.launch();
+
+// Desktop screenshots
 const page = await browser.newPage();
 await page.setViewportSize({ width: 1280, height: 900 });
 for (const [url, name] of [['/', 'home'], ['/watch', 'watch'], ['/experiences', 'experiences'], ['/projects', 'projects']]) {
+  await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('http://localhost:4322' + url);
-  await page.screenshot({ path: `docs/${name}.png`, fullPage: true });
+  await page.screenshot({ path: `docs/${name}-light.png`, fullPage: true });
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.screenshot({ path: `docs/${name}-dark.png`, fullPage: true });
 }
+
+// Mobile screenshots (home page)
+const mobile = await browser.newPage();
+await mobile.setViewportSize({ width: 390, height: 844 });
+for (const scheme of ['light', 'dark']) {
+  await mobile.emulateMedia({ colorScheme: scheme });
+  await mobile.goto('http://localhost:4322/');
+  await mobile.screenshot({ path: `docs/home-mobile-${scheme}.png`, fullPage: true });
+}
+
 await browser.close();
 EOF
 ```

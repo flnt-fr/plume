@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import DemoBanner from '@/components/DemoBanner.astro';
 import Footer from '@/components/Footer.astro';
+import Nav from '@/components/Nav.astro';
 import { defaultOgImage, IS_DEMO, siteName, siteUrl } from '@/config';
 import { ui } from '@/i18n';
 
@@ -22,14 +23,6 @@ const {
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
 const ogImageUrl = new URL(defaultOgImage, siteUrl).toString();
 const pageTitle = appendSiteName ? `${title} — ${siteName}` : title;
-
-const navLinks = [
-  { href: '/about', label: ui.nav.about },
-  { href: '/experiences', label: ui.nav.experiences },
-  { href: '/projects', label: ui.nav.projects },
-  { href: '/watch', label: ui.nav.watch },
-  { href: '/now', label: ui.nav.now },
-];
 ---
 
 <!doctype html>
@@ -68,33 +61,10 @@ const navLinks = [
   </head>
   <body class="bg-base-100 text-base-content min-h-screen">
     {IS_DEMO && <DemoBanner />}
-    <header class="border-b border-base-300">
-      <div class="max-w-2xl mx-auto px-6 py-4 flex items-baseline gap-8">
-        <a href="/" class="font-mono text-sm font-semibold shrink-0">{siteName}</a>
-        <nav aria-label={ui.nav.ariaLabel}>
-          <ul class="flex flex-wrap gap-x-6 gap-y-2">
-            {
-              navLinks.map(({ href, label }) => (
-                <li>
-                  <a
-                    href={href}
-                    class="text-sm hover:text-base-content/70 transition-colors"
-                    aria-current={Astro.url.pathname === href ? 'page' : undefined}
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
-    </header>
-
+    <Nav />
     <main>
       <slot />
     </main>
-
     <Footer />
   </body>
 </html>

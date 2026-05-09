@@ -248,18 +248,21 @@ New feature-specific components must go into the corresponding subdirectory. Tru
 
 ### Base layout — header and navigation
 
-`BaseLayout.astro` renders the page shell: `<html>`, `<head>`, `<header>`, `<main>`, and `<footer>`.
+`BaseLayout.astro` renders the page shell: `<html>`, `<head>`, `<header>`, `<main>`, and `<footer>`. The `<header>` is delegated to `Nav.astro`.
 
-The `<header>` contains:
+`Nav.astro` contains:
 - A link to `/` displaying `siteName` in monospace — the site identity anchor
-- A `<nav aria-label="Main navigation">` with the following links in order:
+- On desktop (`sm:` and above): a `<nav aria-label="Main navigation">` with links rendered inline via `NavItem.astro`
+- On mobile (below `sm:`): a CSS-only hamburger (`<details>`/`<summary>`, DaisyUI `dropdown`) with links rendered via `NavMenuItem.astro`
+
+Both variants expose the same five links in order:
   1. `/about`
   2. `/experiences`
   3. `/projects`
   4. `/watch`
   5. `/now`
 
-The active link receives `aria-current="page"` based on `Astro.url.pathname`.
+The active link receives `aria-current="page"` based on `Astro.url.pathname`, resolved inside each leaf component (`NavItem`, `NavMenuItem`). The desktop nav is hidden on mobile (`hidden sm:block`) and the hamburger is hidden on desktop (`sm:hidden`) — both via `display: none`, which removes them from the accessibility tree.
 
 Props accepted by `BaseLayout`:
 
